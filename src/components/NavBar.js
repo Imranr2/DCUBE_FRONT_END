@@ -3,25 +3,35 @@ import { Box, AppBar, Toolbar, TextField } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 import api from "../api";
 import QRCodeDialog from "./QRCodeDialog";
+import { isValidURL } from "../utils/validateURL";
 
 const NavBar = ({ data, change }) => {
-  const [URL, setURL] = useState("");
+  const [originalURL, setOriginalURL] = useState("");
+  const [urlError, setUrlError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [open, setOpen] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    if (!isValidURL(originalURL)) {
+      setUrlError("Invalid url");
+      return;
+    } else {
+      setUrlError("");
+    }
+
     const eventName = e.nativeEvent.submitter.id;
     if (eventName === "shorten") {
       setIsLoading(true);
       api.url
-        .shortenURL(URL)
+        .shortenURL(originalURL)
         .then((resp) => {
           change([...data, resp.payload.shortened_url]);
         })
         .catch((err) => console.log(err))
         .finally(() => {
-          setURL("");
+          setOriginalURL("");
           setIsLoading(false);
         });
       return;
@@ -33,7 +43,7 @@ const NavBar = ({ data, change }) => {
   };
 
   const handleURLChange = (e) => {
-    setURL(e.target.value);
+    setOriginalURL(e.target.value);
   };
 
   const handleClose = () => {
@@ -45,7 +55,7 @@ const NavBar = ({ data, change }) => {
       position="sticky"
       elevation={0}
       sx={{
-        height: "150px",
+        height: "175px",
         justifyContent: "center",
       }}
     >
@@ -68,8 +78,10 @@ const NavBar = ({ data, change }) => {
             name="url"
             autoComplete="url"
             autoFocus
-            value={URL}
+            value={originalURL}
             onChange={handleURLChange}
+            error={!!urlError}
+            helperText={urlError}
             sx={{ backgroundColor: "white", borderRadius: "4px" }}
           />
           <Box display="flex" gap="10px">
@@ -109,7 +121,7 @@ const NavBar = ({ data, change }) => {
           </Box>
         </form>
       </Toolbar>
-      <QRCodeDialog open={open} close={handleClose} URL={URL} />
+      <QRCodeDialog open={open} close={handleClose} URL={originalURL} />
     </AppBar>
   );
 };
