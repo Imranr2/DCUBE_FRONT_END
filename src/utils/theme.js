@@ -4,7 +4,7 @@ export const theme = createTheme({
   palette: {
     primary: {
       main: "#61c7e8",
-      contrastText: "#202324",
+      contrastText: "#2c3332",
     },
     error: {
       main: "#FF4343",
@@ -22,39 +22,39 @@ export const theme = createTheme({
   typography: {
     fontFamily: `"Lato", sans-serif`,
     h1: {
-      fontSize: "80px",
+      fontSize: "60px",
       fontWeight: 500,
     },
     h2: {
-      fontSize: "56px",
+      fontSize: "40px",
       fontWeight: 500,
     },
     h3: {
-      fontSize: "44px",
+      fontSize: "30px",
       fontWeight: 500,
     },
     h4: {
-      fontSize: "30px",
+      fontSize: "24px",
       fontWeight: 700,
     },
     h5: {
-      fontSize: "32px",
+      fontSize: "20px",
       fontWeight: 500,
     },
     h6: {
-      fontSize: "26px",
-      fontWeight: 700,
+      fontSize: "12px",
+      fontWeight: 500,
     },
     subtitle1: {
-      fontSize: "20px",
+      fontSize: "12px",
       fontWeight: 700,
     },
     body1: {
-      fontSize: "16px",
+      fontSize: "10px",
       fontWeight: 500,
     },
     body2: {
-      fontSize: "14px",
+      fontSize: "8px",
       fontWeight: 500,
     },
   },
