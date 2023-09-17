@@ -1,11 +1,26 @@
 import React, { useState } from "react";
 import { Box, AppBar, Toolbar, TextField } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
+import api from "../api";
 
 const NavBar = () => {
   const [URL, setURL] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+
   const handleSubmit = (e) => {
     e.preventDefault();
+    const eventName = e.nativeEvent.submitter.id;
+    if (eventName === "shorten") {
+      setIsLoading(true);
+      api.url
+        .shortenURL(URL)
+        .then((r) => console.log(r))
+        .catch((err) => console.log(err))
+        .finally(() => {
+          setURL("");
+          setIsLoading(false);
+        });
+    }
   };
 
   const handleURLChange = (e) => {
@@ -48,6 +63,8 @@ const NavBar = () => {
               variant="contained"
               color="secondary"
               type="submit"
+              id="shorten"
+              loading={isLoading}
               sx={{
                 textTransform: "none",
                 fontSize: "20px",
@@ -61,6 +78,7 @@ const NavBar = () => {
             <LoadingButton
               variant="contained"
               type="submit"
+              id="qr"
               sx={{
                 backgroundColor: "white",
                 color: "black",

@@ -5,8 +5,8 @@ class URLAPI extends BaseAPI {
     return this.get("/url");
   }
 
-  shortenURL(originalURL) {
-    return this.post("/url", { originalURL });
+  shortenURL(original_url) {
+    return this.post("/url", { original_url });
   }
 
   deleteURL(id) {
