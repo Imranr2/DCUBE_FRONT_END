@@ -12,6 +12,10 @@ class URLAPI extends BaseAPI {
   deleteURL(id) {
     return this.delete(`/url/${id}`);
   }
+
+  redirect(shortened) {
+    return this.get(`/r/${shortened}`);
+  }
 }
 
 export default URLAPI;

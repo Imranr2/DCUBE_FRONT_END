@@ -6,6 +6,7 @@ import {
   DialogTitle,
   DialogContent,
   DialogContentText,
+  Link,
   Table,
   TableHead,
   TableBody,
@@ -40,7 +41,6 @@ const URLTable = ({ data, change }) => {
   };
 
   const handleCloseConfirmationDialog = () => {
-    // Close the confirmation dialog without performing the delete action
     setDeleteConfirmationOpen(false);
   };
 
@@ -71,6 +71,15 @@ const URLTable = ({ data, change }) => {
       });
   };
 
+  const handleRedirect = (shortened) => {
+    api.url
+      .redirect(shortened)
+      .then((resp) => {
+        console.log(resp);
+      })
+      .catch((err) => console.log(err));
+  };
+
   return (
     <div>
       <TableContainer style={{ maxHeight: "70vh", width: "80vw" }}>
@@ -90,13 +99,24 @@ const URLTable = ({ data, change }) => {
               .map((row, index) => (
                 <TableRow key={index}>
                   <TableCell width="33%">
-                    <a href={row.original}>{row.original}</a>
+                    <Link href={row.original} underline="hover">
+                      {row.original}
+                    </Link>
                   </TableCell>
                   <TableCell width="32%">
                     {new Date(row.createdAt).toUTCString().slice(5, 16)}
                   </TableCell>
                   <TableCell width="33%">
-                    <a href={row.shortened}>{"dcu.be/" + row.shortened}</a>
+                    <Link
+                      component="button"
+                      variant="body2"
+                      underline="hover"
+                      onClick={() => {
+                        handleRedirect(row.shortened);
+                      }}
+                    >
+                      {process.env.REACT_APP_BACKEND_URL + "/" + row.shortened}
+                    </Link>
                   </TableCell>
                   <TableCell
                     width="1%"

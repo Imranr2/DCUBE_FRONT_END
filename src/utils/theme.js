@@ -3,9 +3,9 @@ import { createTheme } from "@mui/material/styles";
 const breakpoints = {
   values: {
     xs: 0,
-    sm: 0, // Phone
-    md: 768, // Tablet/Laptop
-    lg: 1500, // Desktop
+    sm: 0,
+    md: 768,
+    lg: 1500,
     xl: 2000,
   },
 };
