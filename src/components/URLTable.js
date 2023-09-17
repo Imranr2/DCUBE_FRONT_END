@@ -1,21 +1,41 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
   Table,
   TableHead,
   TableBody,
   TableRow,
   TableCell,
-  IconButton,
   TableContainer,
+  IconButton,
 } from "@mui/material";
 import TablePagination from "@mui/material/TablePagination";
 import DeleteIcon from "@mui/icons-material/Delete";
 import QrCodeIcon from "@mui/icons-material/QrCode";
 import api from "../api";
+import { LoadingButton } from "@mui/lab";
 
 const URLTable = ({ data, change }) => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [deleteConfirmationOpen, setDeleteConfirmationOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [selectedRow, setSelectedRow] = useState(null);
+
+  const handleClickDelete = (row) => {
+    setSelectedRow(row);
+    setDeleteConfirmationOpen(true);
+  };
+
+  const handleCloseConfirmationDialog = () => {
+    // Close the confirmation dialog without performing the delete action
+    setDeleteConfirmationOpen(false);
+  };
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -26,13 +46,18 @@ const URLTable = ({ data, change }) => {
     setPage(0);
   };
 
-  const handleDelete = (id) => {
+  const handleDelete = () => {
+    setIsLoading(true);
     api.url
-      .deleteURL(id)
+      .deleteURL(selectedRow.id)
       .then(() => {
-        change(data.filter((url) => url.id !== id));
+        change(data.filter((url) => url.id !== selectedRow.id));
       })
-      .catch((err) => console.log(err));
+      .catch((err) => console.log(err))
+      .finally(() => {
+        setIsLoading(false);
+        setDeleteConfirmationOpen(false);
+      });
   };
 
   return (
@@ -76,7 +101,7 @@ const URLTable = ({ data, change }) => {
                   >
                     <IconButton
                       color="secondary"
-                      onClick={() => handleDelete(row.id)}
+                      onClick={() => handleClickDelete(row)}
                     >
                       <DeleteIcon />
                     </IconButton>{" "}
@@ -97,6 +122,36 @@ const URLTable = ({ data, change }) => {
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </TableContainer>
+      <Dialog
+        open={deleteConfirmationOpen}
+        onClose={handleCloseConfirmationDialog}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">Confirm Deletion</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Are you sure you want to delete this item?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button
+            disabled={isLoading}
+            onClick={handleCloseConfirmationDialog}
+            color="error"
+          >
+            Cancel
+          </Button>
+          <LoadingButton
+            onClick={handleDelete}
+            loading={isLoading}
+            color="primary"
+            autoFocus
+          >
+            Confirm
+          </LoadingButton>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 };
