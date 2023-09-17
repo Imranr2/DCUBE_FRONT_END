@@ -1,8 +1,8 @@
 import BaseAPI from "./base";
 
 class URLAPI extends BaseAPI {
-  getURLs(username, password) {
-    return this.post("/login", { username, password });
+  getURLs() {
+    return this.get("/url");
   }
 
   shortenURL(originalURL) {

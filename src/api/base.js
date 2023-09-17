@@ -1,8 +1,8 @@
 import authAxios from "./axios";
 
 class BaseAPI {
-  clientGet(url, config) {
-    return authAxios.get(url, config);
+  clientGet(url) {
+    return authAxios.get(url);
   }
 
   clientPost(url, data) {
@@ -17,16 +17,12 @@ class BaseAPI {
     return authAxios.delete(url);
   }
 
-  get(url, config) {
-    return processRequest(url, this.clientGet(url, config));
+  get(url) {
+    return processRequest(url, this.clientGet(url));
   }
 
   post(url, data) {
     return processRequest(url, this.clientPost(url, data));
-  }
-
-  put(url, data) {
-    return processRequest(url, this.clientPut(url, data));
   }
 
   delete(url) {

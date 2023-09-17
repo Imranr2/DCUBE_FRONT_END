@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Table,
   TableHead,
@@ -11,10 +11,12 @@ import {
 import TablePagination from "@mui/material/TablePagination";
 import DeleteIcon from "@mui/icons-material/Delete";
 import QrCodeIcon from "@mui/icons-material/QrCode";
+import api from "../api";
 
 const URLTable = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [data, setData] = useState([]);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -25,13 +27,12 @@ const URLTable = () => {
     setPage(0);
   };
 
-  const rows = [
-    {
-      originalUrl: "https://www.google.com/",
-      createdAt: "2023-09-17 10:30 AM",
-      shortenedUrl: "https://short.ly/abcdef",
-    },
-  ];
+  useEffect(() => {
+    api.url
+      .getURLs()
+      .then((resp) => setData(resp.payload.shortened_urls))
+      .catch((err) => console.log(err));
+  }, []);
 
   return (
     <div>
@@ -47,16 +48,18 @@ const URLTable = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows
+            {data
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((row, index) => (
                 <TableRow key={index}>
                   <TableCell width="33%">
-                    <a href={row.originalUrl}>{row.originalUrl}</a>
+                    <a href={row.original}>{row.original}</a>
                   </TableCell>
-                  <TableCell width="32%">{row.createdAt}</TableCell>
+                  <TableCell width="32%">
+                    {new Date(row.createdAt).toUTCString().slice(5, 16)}
+                  </TableCell>
                   <TableCell width="33%">
-                    <a href={row.shortenedUrl}>{row.shortenedUrl}</a>
+                    <a href={row.shortened}>{"dcu.be/" + row.shortened}</a>
                   </TableCell>
                   <TableCell
                     width="1%"
@@ -83,7 +86,7 @@ const URLTable = () => {
         <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
           component="div"
-          count={rows.length}
+          count={data.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}
