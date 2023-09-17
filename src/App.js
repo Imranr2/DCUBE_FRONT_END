@@ -1,4 +1,4 @@
-import Login from "./pages/Login";
+import SignIn from "./pages/SignIn";
 import { theme } from "./utils/theme";
 import { ThemeProvider } from "@mui/material/styles";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
@@ -8,7 +8,7 @@ function App() {
     <ThemeProvider theme={theme}>
       <Router>
         <Routes>
-          <Route path="/" element={<Login />} />
+          <Route path="/" element={<SignIn />} />
         </Routes>
       </Router>
     </ThemeProvider>
