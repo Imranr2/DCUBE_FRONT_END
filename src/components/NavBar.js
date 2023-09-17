@@ -3,7 +3,7 @@ import { Box, AppBar, Toolbar, TextField } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 import api from "../api";
 
-const NavBar = () => {
+const NavBar = ({ data, change }) => {
   const [URL, setURL] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
@@ -14,12 +14,18 @@ const NavBar = () => {
       setIsLoading(true);
       api.url
         .shortenURL(URL)
-        .then((r) => console.log(r))
+        .then((resp) => {
+          change([...data, resp.payload.shortened_url]);
+        })
         .catch((err) => console.log(err))
         .finally(() => {
           setURL("");
           setIsLoading(false);
         });
+      return;
+    }
+
+    if (eventName === "qr") {
     }
   };
 

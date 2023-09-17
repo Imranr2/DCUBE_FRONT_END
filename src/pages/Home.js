@@ -1,9 +1,23 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Box } from "@mui/material";
 import URLTable from "../components/URLTable";
 import NavBar from "../components/NavBar";
+import api from "../api";
 
 const Home = () => {
+  const [data, setData] = useState([]);
+
+  function changeData(newData) {
+    setData(newData);
+  }
+
+  useEffect(() => {
+    api.url
+      .getURLs()
+      .then((resp) => setData(resp.payload.shortened_urls))
+      .catch((err) => console.log(err));
+  }, []);
+
   return (
     <div
       style={{
@@ -12,7 +26,7 @@ const Home = () => {
         height: "100vh",
       }}
     >
-      <NavBar />
+      <NavBar data={data} change={changeData} />
       <Box
         display="flex"
         flexDirection="column"
@@ -20,7 +34,7 @@ const Home = () => {
         alignItems="center"
         height="100%"
       >
-        <URLTable />
+        <URLTable data={data} change={changeData} />
       </Box>
     </div>
   );

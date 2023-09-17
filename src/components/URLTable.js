@@ -13,10 +13,9 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import QrCodeIcon from "@mui/icons-material/QrCode";
 import api from "../api";
 
-const URLTable = () => {
+const URLTable = ({ data, change }) => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
-  const [data, setData] = useState([]);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -27,12 +26,14 @@ const URLTable = () => {
     setPage(0);
   };
 
-  useEffect(() => {
+  const handleDelete = (id) => {
     api.url
-      .getURLs()
-      .then((resp) => setData(resp.payload.shortened_urls))
+      .deleteURL(id)
+      .then(() => {
+        change(data.filter((url) => url.id !== id));
+      })
       .catch((err) => console.log(err));
-  }, []);
+  };
 
   return (
     <div>
@@ -73,7 +74,10 @@ const URLTable = () => {
                     width="1%"
                     sx={{ paddingLeft: "0px", paddingRight: "0px" }}
                   >
-                    <IconButton color="secondary">
+                    <IconButton
+                      color="secondary"
+                      onClick={() => handleDelete(row.id)}
+                    >
                       <DeleteIcon />
                     </IconButton>{" "}
                   </TableCell>{" "}
