@@ -9,6 +9,7 @@ import {
   inputLabelClasses,
   styled,
 } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 const TextField = styled(MuiTextField)(`
   .${inputClasses.root} {
@@ -24,6 +25,9 @@ const SignUp = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [passwordError, setPasswordError] = useState("");
+  const [usernameError, setUsernameError] = useState("");
+
+  const navigate = useNavigate();
 
   const handleUsernameChange = (e) => {
     setUsername(e.target.value);
@@ -40,12 +44,28 @@ const SignUp = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    if (username.length > 32) {
+      setUsernameError("Username can be at most 32 characters long");
+      return;
+    } else {
+      setUsernameError("");
+    }
+
     if (password !== confirmPassword) {
       setPasswordError("Passwords do not match");
       return;
     } else {
       setPasswordError("");
     }
+
+    if (password.length < 8) {
+      setPasswordError("Password must be at least 8 characters long");
+      return;
+    } else {
+      setPasswordError("");
+    }
+
+    navigate("/");
   };
 
   return (
@@ -85,6 +105,8 @@ const SignUp = () => {
               autoFocus
               value={username}
               onChange={handleUsernameChange}
+              error={!!usernameError}
+              helperText={usernameError}
             />
             <TextField
               variant="filled"
@@ -98,6 +120,8 @@ const SignUp = () => {
               autoComplete="new-password"
               value={password}
               onChange={handlePasswordChange}
+              error={!!passwordError}
+              helperText={passwordError}
             />
             <TextField
               variant="filled"
