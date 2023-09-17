@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import {
-  Button,
   TextField as MuiTextField,
   Typography,
   Container,
@@ -9,7 +8,9 @@ import {
   inputLabelClasses,
   styled,
 } from "@mui/material";
+import LoadingButton from "@mui/lab/LoadingButton";
 import { useNavigate } from "react-router-dom";
+import api from "../api";
 
 const TextField = styled(MuiTextField)(`
   .${inputClasses.root} {
@@ -26,6 +27,7 @@ const SignUp = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [usernameError, setUsernameError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
 
@@ -64,8 +66,12 @@ const SignUp = () => {
     } else {
       setPasswordError("");
     }
-
-    navigate("/");
+    setIsLoading(true);
+    api.user
+      .signUp(username, password)
+      .then(() => navigate("/"))
+      .catch((err) => console.log(err))
+      .finally(() => setIsLoading(false));
   };
 
   return (
@@ -87,7 +93,7 @@ const SignUp = () => {
           }}
         >
           <Typography component="h1" variant="h5">
-            Register
+            Sign Up
           </Typography>
           <form
             style={{ width: "100%", marginTop: "1rem" }}
@@ -138,15 +144,16 @@ const SignUp = () => {
               error={!!passwordError}
               helperText={passwordError}
             />
-            <Button
+            <LoadingButton
               type="submit"
+              loading={isLoading}
               fullWidth
               variant="contained"
               color="primary"
               style={{ marginTop: "1rem" }}
             >
-              Register
-            </Button>
+              Sign Up
+            </LoadingButton>
           </form>
         </div>
       </Container>
