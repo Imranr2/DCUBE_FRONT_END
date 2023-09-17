@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import {
-  Button,
   TextField as MuiTextField,
   Typography,
   Container,
@@ -9,6 +8,9 @@ import {
   inputLabelClasses,
   styled,
 } from "@mui/material";
+import LoadingButton from "@mui/lab/LoadingButton";
+import { useNavigate } from "react-router-dom";
+import api from "../api";
 
 const TextField = styled(MuiTextField)(`
   .${inputClasses.root} {
@@ -22,6 +24,9 @@ const TextField = styled(MuiTextField)(`
 const SignIn = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+
+  const navigate = useNavigate();
 
   const handleUsernameChange = (e) => {
     setUsername(e.target.value);
@@ -33,7 +38,13 @@ const SignIn = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Handle login logic here
+
+    setIsLoading(true);
+    api.user
+      .signIn(username, password)
+      .then(() => navigate("/signup"))
+      .catch((err) => console.log(err))
+      .finally(() => setIsLoading(false));
   };
 
   return (
@@ -87,15 +98,16 @@ const SignIn = () => {
               value={password}
               onChange={handlePasswordChange}
             />
-            <Button
+            <LoadingButton
               type="submit"
+              loading={isLoading}
               fullWidth
               variant="contained"
               color="primary"
               style={{ marginTop: "1rem" }}
             >
               Sign In
-            </Button>
+            </LoadingButton>
           </form>
         </div>
       </Container>
