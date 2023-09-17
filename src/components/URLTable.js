@@ -19,6 +19,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import QrCodeIcon from "@mui/icons-material/QrCode";
 import api from "../api";
 import { LoadingButton } from "@mui/lab";
+import QRCodeDialog from "./QRCodeDialog";
 
 const URLTable = ({ data, change }) => {
   const [page, setPage] = useState(0);
@@ -26,15 +27,25 @@ const URLTable = ({ data, change }) => {
   const [deleteConfirmationOpen, setDeleteConfirmationOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [selectedRow, setSelectedRow] = useState(null);
+  const [QRDialogOpen, setQRDialogOpen] = useState(false);
 
   const handleClickDelete = (row) => {
     setSelectedRow(row);
     setDeleteConfirmationOpen(true);
   };
 
+  const handleClickQR = (row) => {
+    setSelectedRow(row);
+    setQRDialogOpen(true);
+  };
+
   const handleCloseConfirmationDialog = () => {
     // Close the confirmation dialog without performing the delete action
     setDeleteConfirmationOpen(false);
+  };
+
+  const handleCloseQRDialog = () => {
+    setQRDialogOpen(false);
   };
 
   const handleChangePage = (event, newPage) => {
@@ -91,10 +102,13 @@ const URLTable = ({ data, change }) => {
                     width="1%"
                     sx={{ paddingLeft: "0px", paddingRight: "0px" }}
                   >
-                    <IconButton color="secondary">
+                    <IconButton
+                      color="secondary"
+                      onClick={() => handleClickQR(row)}
+                    >
                       <QrCodeIcon />
-                    </IconButton>{" "}
-                  </TableCell>{" "}
+                    </IconButton>
+                  </TableCell>
                   <TableCell
                     width="1%"
                     sx={{ paddingLeft: "0px", paddingRight: "0px" }}
@@ -104,8 +118,8 @@ const URLTable = ({ data, change }) => {
                       onClick={() => handleClickDelete(row)}
                     >
                       <DeleteIcon />
-                    </IconButton>{" "}
-                  </TableCell>{" "}
+                    </IconButton>
+                  </TableCell>
                 </TableRow>
               ))}
           </TableBody>
@@ -152,6 +166,11 @@ const URLTable = ({ data, change }) => {
           </LoadingButton>
         </DialogActions>
       </Dialog>
+      <QRCodeDialog
+        open={QRDialogOpen}
+        close={handleCloseQRDialog}
+        URL={selectedRow ? selectedRow.original : ""}
+      />
     </div>
   );
 };

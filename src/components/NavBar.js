@@ -2,10 +2,12 @@ import React, { useState } from "react";
 import { Box, AppBar, Toolbar, TextField } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 import api from "../api";
+import QRCodeDialog from "./QRCodeDialog";
 
 const NavBar = ({ data, change }) => {
   const [URL, setURL] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [open, setOpen] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -26,12 +28,18 @@ const NavBar = ({ data, change }) => {
     }
 
     if (eventName === "qr") {
+      setOpen(true);
     }
   };
 
   const handleURLChange = (e) => {
     setURL(e.target.value);
   };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   return (
     <AppBar
       position="sticky"
@@ -101,6 +109,7 @@ const NavBar = ({ data, change }) => {
           </Box>
         </form>
       </Toolbar>
+      <QRCodeDialog open={open} close={handleClose} URL={URL} />
     </AppBar>
   );
 };
