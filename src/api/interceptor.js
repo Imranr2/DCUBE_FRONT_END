@@ -47,7 +47,7 @@ const AxiosInterceptor = ({ children }) => {
     return () => {
       authAxios.interceptors.response.eject(responseInterceptor);
     };
-  });
+  }, [enqueueSnackbar]);
 
   if (!isIntercepted) return null;
 
