@@ -42,7 +42,7 @@ const SignIn = () => {
     setIsLoading(true);
     api.user
       .signIn(username, password)
-      .then(() => navigate("/signup"))
+      .then(() => navigate("/home"))
       .catch((err) => console.log(err))
       .finally(() => setIsLoading(false));
   };
@@ -65,8 +65,8 @@ const SignIn = () => {
             alignItems: "center",
           }}
         >
-          <Typography component="h1" variant="h5">
-            Sign in
+          <Typography component="h1" variant="h1">
+            Sign In
           </Typography>
           <form
             style={{ width: "100%", marginTop: "1rem" }}
