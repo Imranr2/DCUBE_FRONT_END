@@ -42,7 +42,7 @@ const SignIn = () => {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        minHeight: "100vh", // Center vertically
+        minHeight: "100vh",
       }}
     >
       <Container component="main" maxWidth="xs">
