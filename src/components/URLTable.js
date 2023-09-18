@@ -114,6 +114,7 @@ const URLTable = ({ data, change }) => {
                       onClick={() => {
                         handleRedirect(row.shortened);
                       }}
+                      sx={{ textAlign: "left" }}
                     >
                       {process.env.REACT_APP_BACKEND_URL + "r/" + row.shortened}
                     </Link>
