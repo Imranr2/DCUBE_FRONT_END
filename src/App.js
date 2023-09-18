@@ -5,7 +5,7 @@ import { ThemeProvider } from "@mui/material/styles";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { AxiosInterceptor } from "./api/interceptor";
 import { SnackbarProvider } from "notistack";
-import PrivateRoutes from "./utils/PrivateRoutes";
+import { PublicRoutes, PrivateRoutes } from "./utils/Routes";
 import Home from "./pages/Home";
 
 function App() {
@@ -15,7 +15,9 @@ function App() {
         <AxiosInterceptor>
           <Router>
             <Routes>
-              <Route path="/" element={<SignIn />} />
+              <Route element={<PublicRoutes />}>
+                <Route path="/" element={<SignIn />} />
+              </Route>
               <Route path="/signup" element={<SignUp />} />
               <Route element={<PrivateRoutes />}>
                 <Route path="/home" element={<Home />}></Route>
