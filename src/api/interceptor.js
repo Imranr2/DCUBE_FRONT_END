@@ -1,19 +1,26 @@
 import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
 import authAxios from "./axios";
+import { setHeaders, saveHeaders } from "./helpers/headers";
 
 const AxiosInterceptor = ({ children }) => {
   const { enqueueSnackbar } = useSnackbar();
   const [isIntercepted, setIsIntercepted] = useState(false);
 
   useEffect(() => {
+    const requestInterceptor = authAxios.interceptors.request.use((req) =>
+      setHeaders(req)
+    );
+
     const responseInterceptor = authAxios.interceptors.response.use(
       (response) => {
         const statusMessage = response?.data?.message;
+
         if (statusMessage) {
           enqueueSnackbar(statusMessage, { variant: "success" });
         }
 
+        saveHeaders(response);
         return response;
       },
       (error) => {
@@ -45,6 +52,7 @@ const AxiosInterceptor = ({ children }) => {
     setIsIntercepted(true);
 
     return () => {
+      authAxios.interceptors.request.eject(requestInterceptor);
       authAxios.interceptors.response.eject(responseInterceptor);
     };
   }, [enqueueSnackbar]);
