@@ -95,6 +95,7 @@ const URLTable = ({ data, change }) => {
           </TableHead>
           <TableBody>
             {data
+              .sort((x, y) => y.id - x.id)
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((row, index) => (
                 <TableRow key={index}>
