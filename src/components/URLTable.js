@@ -75,7 +75,7 @@ const URLTable = ({ data, change }) => {
     api.url
       .redirect(shortened)
       .then((resp) => {
-        console.log(resp);
+        window.location.replace(resp.payload.original);
       })
       .catch((err) => console.log(err));
   };
@@ -115,9 +115,7 @@ const URLTable = ({ data, change }) => {
                         handleRedirect(row.shortened);
                       }}
                     >
-                      {process.env.REACT_APP_BACKEND_URL +
-                        "/r/" +
-                        row.shortened}
+                      {process.env.REACT_APP_BACKEND_URL + "r/" + row.shortened}
                     </Link>
                   </TableCell>
                   <TableCell
