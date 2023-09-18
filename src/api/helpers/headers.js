@@ -16,3 +16,7 @@ export function saveHeaders(resp) {
   }
   return resp;
 }
+
+export function removeHeaders() {
+  Cookies.remove("token");
+}

@@ -13,6 +13,7 @@ import {
   TableRow,
   TableCell,
   TableContainer,
+  Typography,
   IconButton,
 } from "@mui/material";
 import TablePagination from "@mui/material/TablePagination";
@@ -21,6 +22,7 @@ import QrCodeIcon from "@mui/icons-material/QrCode";
 import api from "../api";
 import { LoadingButton } from "@mui/lab";
 import QRCodeDialog from "./QRCodeDialog";
+import { Ghost } from "react-kawaii";
 
 const URLTable = ({ data, change }) => {
   const [page, setPage] = useState(0);
@@ -81,119 +83,142 @@ const URLTable = ({ data, change }) => {
   };
 
   return (
-    <div>
-      <TableContainer style={{ maxHeight: "70vh", width: "80vw" }}>
-        <Table stickyHeader>
-          <TableHead>
-            <TableRow>
-              <TableCell width="33%">Original URL</TableCell>
-              <TableCell width="32%">Created At</TableCell>
-              <TableCell width="33%">Shortened URL</TableCell>
-              <TableCell width="1%"></TableCell>
-              <TableCell width="1%"></TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {data
-              .sort((x, y) => y.id - x.id)
-              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((row, index) => (
-                <TableRow key={index}>
-                  <TableCell width="33%">
-                    <Link href={row.original} underline="hover">
-                      {row.original}
-                    </Link>
-                  </TableCell>
-                  <TableCell width="32%">
-                    {new Date(row.createdAt).toUTCString().slice(5, 16)}
-                  </TableCell>
-                  <TableCell width="33%">
-                    <Link
-                      component="button"
-                      variant="body2"
-                      underline="hover"
-                      onClick={() => {
-                        handleRedirect(row.shortened);
-                      }}
-                      sx={{ textAlign: "left" }}
-                    >
-                      {process.env.REACT_APP_BACKEND_URL + "r/" + row.shortened}
-                    </Link>
-                  </TableCell>
-                  <TableCell
-                    width="1%"
-                    sx={{ paddingLeft: "0px", paddingRight: "0px" }}
-                  >
-                    <IconButton
-                      color="secondary"
-                      onClick={() => handleClickQR(row)}
-                    >
-                      <QrCodeIcon />
-                    </IconButton>
-                  </TableCell>
-                  <TableCell
-                    width="1%"
-                    sx={{ paddingLeft: "0px", paddingRight: "0px" }}
-                  >
-                    <IconButton
-                      color="secondary"
-                      onClick={() => handleClickDelete(row)}
-                    >
-                      <DeleteIcon />
-                    </IconButton>
-                  </TableCell>
+    <>
+      {data.length === 0 ? (
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <Ghost size={240} mood="sad" color="#E0E4E8" />
+          <Typography variant="body1" textAlign="center">
+            You don't have any shortened URLs
+          </Typography>
+          <Typography variant="body1" textAlign="center">
+            Create one now!
+          </Typography>
+        </div>
+      ) : (
+        <div>
+          <TableContainer style={{ maxHeight: "55vh", width: "80vw" }}>
+            <Table stickyHeader>
+              <TableHead>
+                <TableRow>
+                  <TableCell width="33%">Original URL</TableCell>
+                  <TableCell width="32%">Created At</TableCell>
+                  <TableCell width="33%">Shortened URL</TableCell>
+                  <TableCell width="1%"></TableCell>
+                  <TableCell width="1%"></TableCell>
                 </TableRow>
-              ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      <TableContainer style={{ maxHeight: "80vh", maxWidth: "80vw" }}>
-        <TablePagination
-          rowsPerPageOptions={[5, 10, 25]}
-          component="div"
-          count={data.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-        />
-      </TableContainer>
-      <Dialog
-        open={deleteConfirmationOpen}
-        onClose={handleCloseConfirmationDialog}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogTitle id="alert-dialog-title">Confirm Deletion</DialogTitle>
-        <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            Are you sure you want to delete this item?
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button
-            disabled={isLoading}
-            onClick={handleCloseConfirmationDialog}
-            color="error"
+              </TableHead>
+              <TableBody>
+                {data
+                  .sort((x, y) => y.id - x.id)
+                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                  .map((row, index) => (
+                    <TableRow key={index}>
+                      <TableCell width="33%">
+                        <Link href={row.original} underline="hover">
+                          {row.original}
+                        </Link>
+                      </TableCell>
+                      <TableCell width="32%">
+                        {new Date(row.createdAt).toUTCString().slice(5, 16)}
+                      </TableCell>
+                      <TableCell width="33%">
+                        <Link
+                          component="button"
+                          variant="body2"
+                          underline="hover"
+                          onClick={() => {
+                            handleRedirect(row.shortened);
+                          }}
+                          sx={{ textAlign: "left" }}
+                        >
+                          {process.env.REACT_APP_BACKEND_URL +
+                            "r/" +
+                            row.shortened}
+                        </Link>
+                      </TableCell>
+                      <TableCell
+                        width="1%"
+                        sx={{ paddingLeft: "0px", paddingRight: "0px" }}
+                      >
+                        <IconButton
+                          color="secondary"
+                          onClick={() => handleClickQR(row)}
+                        >
+                          <QrCodeIcon />
+                        </IconButton>
+                      </TableCell>
+                      <TableCell
+                        width="1%"
+                        sx={{ paddingLeft: "0px", paddingRight: "0px" }}
+                      >
+                        <IconButton
+                          color="secondary"
+                          onClick={() => handleClickDelete(row)}
+                        >
+                          <DeleteIcon />
+                        </IconButton>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+          <TableContainer style={{ maxHeight: "80vh", maxWidth: "80vw" }}>
+            <TablePagination
+              rowsPerPageOptions={[5, 10, 25]}
+              component="div"
+              count={data.length}
+              rowsPerPage={rowsPerPage}
+              page={page}
+              onPageChange={handleChangePage}
+              onRowsPerPageChange={handleChangeRowsPerPage}
+            />
+          </TableContainer>
+          <Dialog
+            open={deleteConfirmationOpen}
+            onClose={handleCloseConfirmationDialog}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
           >
-            Cancel
-          </Button>
-          <LoadingButton
-            onClick={handleDelete}
-            loading={isLoading}
-            color="primary"
-            autoFocus
-          >
-            Confirm
-          </LoadingButton>
-        </DialogActions>
-      </Dialog>
-      <QRCodeDialog
-        open={QRDialogOpen}
-        close={handleCloseQRDialog}
-        originalURL={selectedRow ? selectedRow.original : ""}
-      />
-    </div>
+            <DialogTitle id="alert-dialog-title">Confirm Deletion</DialogTitle>
+            <DialogContent>
+              <DialogContentText id="alert-dialog-description">
+                Are you sure you want to delete this item?
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button
+                disabled={isLoading}
+                onClick={handleCloseConfirmationDialog}
+                color="error"
+              >
+                Cancel
+              </Button>
+              <LoadingButton
+                onClick={handleDelete}
+                loading={isLoading}
+                color="primary"
+                autoFocus
+              >
+                Confirm
+              </LoadingButton>
+            </DialogActions>
+          </Dialog>
+          <QRCodeDialog
+            open={QRDialogOpen}
+            close={handleCloseQRDialog}
+            originalURL={selectedRow ? selectedRow.original : ""}
+          />
+        </div>
+      )}
+    </>
   );
 };
 

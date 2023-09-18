@@ -11,7 +11,7 @@ import Home from "./pages/Home";
 function App() {
   return (
     <ThemeProvider theme={theme}>
-      <SnackbarProvider maxSnack={3}>
+      <SnackbarProvider maxSnack={3} autoHideDuration={1000}>
         <AxiosInterceptor>
           <Router>
             <Routes>
