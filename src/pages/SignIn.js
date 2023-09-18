@@ -4,6 +4,7 @@ import {
   Typography,
   Container,
   CssBaseline,
+  Link,
   inputClasses,
   inputLabelClasses,
   styled,
@@ -110,6 +111,9 @@ const SignIn = () => {
             </LoadingButton>
           </form>
         </div>
+        <Link href="/signup" variant="subtitle1" underline="hover">
+          Don't have an account? Sign up here!
+        </Link>
       </Container>
     </div>
   );

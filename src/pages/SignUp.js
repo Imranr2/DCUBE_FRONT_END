@@ -4,6 +4,7 @@ import {
   Typography,
   Container,
   CssBaseline,
+  Link,
   inputClasses,
   inputLabelClasses,
   styled,
@@ -92,7 +93,7 @@ const SignUp = () => {
             alignItems: "center",
           }}
         >
-          <Typography component="h1" variant="h5">
+          <Typography component="h1" variant="h1">
             Sign Up
           </Typography>
           <form
@@ -156,6 +157,9 @@ const SignUp = () => {
             </LoadingButton>
           </form>
         </div>
+        <Link href="/" variant="subtitle1" underline="hover">
+          Already have an account? Sign in here!
+        </Link>
       </Container>
     </div>
   );
