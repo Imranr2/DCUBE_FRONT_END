@@ -115,7 +115,9 @@ const URLTable = ({ data, change }) => {
                         handleRedirect(row.shortened);
                       }}
                     >
-                      {process.env.REACT_APP_BACKEND_URL + "/" + row.shortened}
+                      {process.env.REACT_APP_BACKEND_URL +
+                        "/r/" +
+                        row.shortened}
                     </Link>
                   </TableCell>
                   <TableCell
@@ -189,7 +191,7 @@ const URLTable = ({ data, change }) => {
       <QRCodeDialog
         open={QRDialogOpen}
         close={handleCloseQRDialog}
-        URL={selectedRow ? selectedRow.original : ""}
+        originalURL={selectedRow ? selectedRow.original : ""}
       />
     </div>
   );
