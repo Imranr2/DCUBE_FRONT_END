@@ -121,7 +121,11 @@ const URLTable = ({ data, change }) => {
                   .map((row, index) => (
                     <TableRow key={index}>
                       <TableCell width="33%">
-                        <Link href={row.original} underline="hover">
+                        <Link
+                          href={row.original}
+                          target="_blank"
+                          underline="hover"
+                        >
                           {row.original}
                         </Link>
                       </TableCell>
