@@ -77,7 +77,7 @@ const URLTable = ({ data, change }) => {
     api.url
       .redirect(shortened)
       .then((resp) => {
-        window.location.replace(resp.payload.original);
+        window.open(resp.payload.original, "_blank");
       })
       .catch((err) => console.log(err));
   };
