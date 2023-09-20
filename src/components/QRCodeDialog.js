@@ -19,14 +19,14 @@ const QRCodeDialog = ({ open, close, originalURL }) => {
   return (
     <Dialog open={open} onClose={close}>
       <DialogContent>
-        <QRCode id="qr-gen" value={originalURL} size={290} level={"H"} />
+        <QRCode id="qr-gen" value={originalURL} size={230} level={"H"} />
       </DialogContent>
       <DialogActions style={{ justifyContent: "center" }}>
         <Button
           variant="contained"
-          sx={{ fontSize: "20px" }}
+          sx={{ fontSize: "20px", textTransform: "none" }}
           onClick={downloadQRCode}
-          color="primary"
+          color="secondary"
         >
           Download
         </Button>
