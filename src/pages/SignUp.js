@@ -12,6 +12,7 @@ import {
 import LoadingButton from "@mui/lab/LoadingButton";
 import { useNavigate } from "react-router-dom";
 import api from "../api";
+import validator from "validator";
 
 const TextField = styled(MuiTextField)(`
   .${inputClasses.root} {
@@ -32,6 +33,23 @@ const SignUp = () => {
 
   const navigate = useNavigate();
 
+  const isValidPassword = () => {
+    return validator.isStrongPassword(password, {
+      minLength: 8,
+      minLowercase: 1,
+      minUppercase: 1,
+      minNumbers: 1,
+      minSymbols: 1,
+    });
+  };
+
+  const isValidUsername = () => {
+    return validator.isLength(username, {
+      min: 8,
+      max: 32,
+    });
+  };
+
   const handleUsernameChange = (e) => {
     setUsername(e.target.value);
   };
@@ -47,8 +65,8 @@ const SignUp = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (username.length > 32) {
-      setUsernameError("Username can be at most 32 characters long");
+    if (!isValidUsername()) {
+      setUsernameError("Username must be between 8 and 32 characters long");
       return;
     } else {
       setUsernameError("");
@@ -61,8 +79,10 @@ const SignUp = () => {
       setPasswordError("");
     }
 
-    if (password.length < 8) {
-      setPasswordError("Password must be at least 8 characters long");
+    if (!isValidPassword()) {
+      setPasswordError(
+        "Passwords must have at least a lowercase, uppercase, number, symbol and must be at least 8 characters long"
+      );
       return;
     } else {
       setPasswordError("");
