@@ -74,7 +74,7 @@ const NavBar = ({ data, change }) => {
             required
             fullWidth
             id="url"
-            label="Enter URL here..."
+            label="https://www.example.com"
             name="url"
             autoComplete="url"
             autoFocus
