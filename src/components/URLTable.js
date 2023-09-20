@@ -130,7 +130,7 @@ const URLTable = ({ data, change }) => {
                       </TableCell>
                       <TableCell width="33%">
                         <Link
-                          component="button"
+                          href="#"
                           variant="body2"
                           underline="hover"
                           onClick={() => {
