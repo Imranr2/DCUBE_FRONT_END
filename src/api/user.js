@@ -2,11 +2,11 @@ import BaseAPI from "./base";
 
 class UserAPI extends BaseAPI {
   signIn(username, password) {
-    return this.post("/login", { username, password });
+    return this.post("/signin", { username, password });
   }
 
   signUp(username, password) {
-    return this.post("/register", { username, password });
+    return this.post("/signup", { username, password });
   }
 }
 
